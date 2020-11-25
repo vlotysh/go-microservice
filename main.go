@@ -2,6 +2,7 @@ package main
 
 import (
 	"awesomeProject/server"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
@@ -9,6 +10,13 @@ import (
 )
 
 const message = "Hello world"
+
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
 
 var (
 	GoServerAddr = os.Getenv("GO_SERVER_ADDR")
@@ -21,7 +29,7 @@ func main()  {
 		writer.Write([]byte(message + " " + t.Format("2006-01-02 15:04:05")))
 	})
 
-	srv := server.New(mux, ":8081")
+	srv := server.New(mux, os.Getenv("GO_SERVER_ADDR"))
 	err := srv.ListenAndServe()
 
 	if err != nil {
