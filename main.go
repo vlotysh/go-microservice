@@ -22,12 +22,14 @@ var (
 	GoServerAddr = os.Getenv("GO_SERVER_ADDR")
 )
 
+func HomePage(writer http.ResponseWriter, request *http.Request) {
+	t := time.Now()
+	writer.Write([]byte(message + " " + t.Format("2006-01-02 15:04:05")))
+}
+
 func main()  {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		t := time.Now()
-		writer.Write([]byte(message + " " + t.Format("2006-01-02 15:04:05")))
-	})
+	mux.HandleFunc("/", HomePage)
 
 	srv := server.New(mux, os.Getenv("GO_SERVER_ADDR"))
 	err := srv.ListenAndServe()
@@ -36,3 +38,4 @@ func main()  {
 		log.Fatalf("server failed to start: %v ", err)
 	}
 }
+
