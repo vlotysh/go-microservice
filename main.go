@@ -1,7 +1,7 @@
 package main
 
 import (
-	"awesomeProject/server"
+	"./server"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
