@@ -1,8 +1,11 @@
+// +build tools
+
 package main
 
 import (
 	"./server"
 	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
