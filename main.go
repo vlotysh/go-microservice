@@ -1,10 +1,8 @@
-// +build tools
-
 package main
 
 import (
-	"./server"
-	"./pages"
+	"go-microservice/pages"
+	"go-microservice/server"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv"
 	"log"
@@ -21,6 +19,10 @@ func init() {
 }
 
 func main()  {
+	logger := log.New(os.Stdout, "go api ", log.LstdFlags | log.Lshortfile)
+
+	h := pages.NewHandlers(logger)
+
 	var (
 		GoServerAddr = os.Getenv("GO_SERVER_ADDR")
 		GoCertFile   = os.Getenv("GO_CERT_FILE")
@@ -28,7 +30,8 @@ func main()  {
 	)
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", pages.HomePage)
+
+	h.SetupRoutes(mux)
 
 	srv := server.New(mux, GoServerAddr)
 	err := srv.ListenAndServeTLS(GoCertFile, GoKeyFile)
