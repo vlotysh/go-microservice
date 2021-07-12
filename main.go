@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go-microservice/pages"
-	"go-microservice/server"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv"
+	"go-microservice/pages"
+	"go-microservice/server"
 	"log"
 	"net/http"
 	"os"
@@ -28,6 +28,8 @@ func main()  {
 		GoCertFile   = os.Getenv("GO_CERT_FILE")
 		GoKeyFile    = os.Getenv("GO_KEY_FILE")
 	)
+
+	log.Print("Inited web server " + GoServerAddr)
 
 	mux := http.NewServeMux()
 
