@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	_ "github.com/joho/godotenv"
 	"go-microservice/pages"
 	"go-microservice/server"
 	"log"
@@ -21,7 +21,10 @@ func init() {
 func main()  {
 	logger := log.New(os.Stdout, "go api ", log.LstdFlags | log.Lshortfile)
 
+	r := mux.NewRouter()
+
 	h := pages.NewHandlers(logger)
+	auth := pages.NewHandlersAuth(logger)
 
 	var (
 		GoServerAddr = os.Getenv("GO_SERVER_ADDR")
@@ -33,7 +36,8 @@ func main()  {
 
 	mux := http.NewServeMux()
 
-	h.SetupRoutes(mux)
+	h.SetupRoutes(mux, r)
+	auth.SetupRoutes(mux, r)
 
 	srv := server.New(mux, GoServerAddr)
 	err := srv.ListenAndServeTLS(GoCertFile, GoKeyFile)

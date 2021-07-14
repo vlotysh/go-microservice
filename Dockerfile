@@ -13,9 +13,6 @@ WORKDIR /go/src/go-microservice/
 # Build Go Wrapper
 ########
 
-# Install go dependencies
-RUN go get github.com/joho/godotenv
-
 #build the go app
 #RUN go env -w GO111MODULE=auto
 RUN go mod init

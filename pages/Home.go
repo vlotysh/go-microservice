@@ -1,6 +1,8 @@
 package pages
 
 import (
+	"github.com/gorilla/mux"
+	"go-microservice/server"
 	"log"
 	"net/http"
 	"time"
@@ -34,11 +36,9 @@ func (h *Handlers) Logger(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func (h *Handlers) SetupRoutes(mux *http.ServeMux)  {
-	/**
-	Setup routes method and passing controller action to middleware
-	*/
-	mux.HandleFunc("/", h.Logger(h.Home))
+func (h *Handlers) SetupRoutes(mux *http.ServeMux, r *mux.Router)  {
+	r.HandleFunc("/", h.Logger(h.Home)).Methods("GET")
+	mux.Handle("/", server.MH{Handler: r})
 }
 
 func NewHandlers(logger *log.Logger) *Handlers {

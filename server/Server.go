@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+type MH struct {
+	http.Handler
+}
+
 func New(mux *http.ServeMux, addr string) *http.Server  {
 	tlsConfig := &tls.Config{
 		// Causes servers to use Go's default ciphersuite preferences,
