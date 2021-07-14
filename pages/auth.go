@@ -26,6 +26,19 @@ func (h *HandlersAuth) Auth(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
+func (h *HandlersAuth) AuthId(writer http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
+
+	writer.Header().Set("Content-type", "text/place; charset=utf-8")
+	writer.WriteHeader(http.StatusOK)
+
+	_, err := writer.Write([]byte(message_auth + " " + vars["id"]))
+
+	if err != nil {
+		h.logger.Fatalln("Error!")
+	}
+}
+
 func (h *HandlersAuth) Logger(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
@@ -38,6 +51,8 @@ func (h *HandlersAuth) Logger(next http.HandlerFunc) http.HandlerFunc {
 
 func (h *HandlersAuth) SetupRoutes(mux *http.ServeMux, r *mux.Router)  {
 	r.HandleFunc("/auth", h.Logger(h.Auth)).Methods("POST")
+	r.HandleFunc("/auth/{id}", h.Logger(h.AuthId)).Methods("GET")
+
 	mux.Handle("/auth", server.MH{Handler: r})
 }
 
