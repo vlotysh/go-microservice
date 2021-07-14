@@ -32,12 +32,14 @@ func main()  {
 		GoKeyFile    = os.Getenv("GO_KEY_FILE")
 	)
 
-	log.Print("Inited web server " + GoServerAddr)
+	log.Print("Init web server " + GoServerAddr)
 
 	mux := http.NewServeMux()
 
 	h.SetupRoutes(mux, r)
 	auth.SetupRoutes(mux, r)
+
+	mux.Handle("/", r)
 
 	srv := server.New(mux, GoServerAddr)
 	err := srv.ListenAndServeTLS(GoCertFile, GoKeyFile)

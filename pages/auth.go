@@ -2,7 +2,6 @@ package pages
 
 import (
 	"github.com/gorilla/mux"
-	"go-microservice/server"
 	"log"
 	"net/http"
 	"time"
@@ -52,8 +51,6 @@ func (h *HandlersAuth) Logger(next http.HandlerFunc) http.HandlerFunc {
 func (h *HandlersAuth) SetupRoutes(mux *http.ServeMux, r *mux.Router)  {
 	r.HandleFunc("/auth", h.Logger(h.Auth)).Methods("POST")
 	r.HandleFunc("/auth/{id}", h.Logger(h.AuthId)).Methods("GET")
-
-	mux.Handle("/auth", server.MH{Handler: r})
 }
 
 func NewHandlersAuth(logger *log.Logger) *HandlersAuth {
