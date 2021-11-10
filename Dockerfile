@@ -14,22 +14,19 @@ WORKDIR /go/src/go-microservice/
 ########
 
 #build the go app
-#RUN go env -w GO111MODULE=auto
 RUN go mod init
 RUN go get -d
-RUN GOOS=linux GOARCH=amd64 go build -o ./go-microservice ./main.go
-
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o go-microservice main.go
 
 # final stage
-#FROM alpine:3.8
+FROM alpine:3.10
+RUN apk --no-cache add ca-certificates
 
-#WORKDIR /
-#COPY --from=builder /go/src/go-microservice/certs/docker.localhost.* /
-#COPY --from=builder /go/src/go-microservice/go-microservice /
+WORKDIR /root/
 
-#EXPOSE 8081
-
-#CMD ["/bin/sh"]
+COPY --from=builder /go/src/go-microservice/certs ./certs
+COPY --from=builder /go/src/go-microservice/.env .
+COPY --from=builder /go/src/go-microservice/go-microservice .
 
 EXPOSE 8081
 
