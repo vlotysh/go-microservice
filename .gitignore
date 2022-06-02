@@ -19,3 +19,7 @@ src/
 go_build_*
 
 .env
+
+.DS_Store
+.vscode
+__debug_bin
