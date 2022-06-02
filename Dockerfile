@@ -1,4 +1,4 @@
-FROM golang:1.16 AS builder
+FROM golang:1.18 AS builder
 
 ########
 # Prep
@@ -14,7 +14,7 @@ WORKDIR /go/src/go-microservice/
 ########
 
 #build the go app
-RUN go mod init
+#RUN go mod init
 RUN go get -d
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o go-microservice main.go
 
